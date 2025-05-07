@@ -1,0 +1,6 @@
+@EsmeChecker.WebAPI_HostAddress = http://localhost:5139
+
+GET {{EsmeChecker.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

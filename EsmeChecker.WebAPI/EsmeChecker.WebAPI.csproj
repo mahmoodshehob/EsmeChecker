@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EsmeChecker.BusinessRules\EsmeChecker.BusinessRules.csproj" />
+    <ProjectReference Include="..\EsmeChecker.DataAccess\EsmeChecker.DataAccess.csproj" />
+    <ProjectReference Include="..\EsmeChecker.Entities\EsmeChecker.Entities.csproj" />
+    <ProjectReference Include="..\EsmeChecker.Models\EsmeChecker.Models.csproj" />
+  </ItemGroup>
+
+</Project>
