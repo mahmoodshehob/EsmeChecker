@@ -9,7 +9,7 @@ namespace EsmeChecker.BusinessRules.Interfaces
 {
     public interface IMainServices
     {
-		Task<ContentResult> QueryEsmeService(string xmlContent);
-
-	}
+		Task<ContentResult> QueryEsmeServiceByUssd(string xmlContent);
+        Task<ContentResult> QueryEsmeServiceDirect(string ussdServiceCode, string mSISDN, string ussdRequestString);
+    }
 }

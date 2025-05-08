@@ -29,101 +29,123 @@ namespace EsmeChecker.BusinessRules.Services
 
 		private const string contentType = "text/xml";
 
-		public async Task<ContentResult> QueryEsmeService(string xmlContent) 
+
+        private async Task<MultiResponseUSSD> QueryEsmeService(MultiRequestUSSD multiRequest)
         {
+            Esme esme = await unitOfWork.SybaseRepository.QueryEsme(multiRequest.USSDRequestString);
 
-			ContentResult response = new ContentResult();
+            MultiResponseUSSD multiResponse = new MultiResponseUSSD()
+            {
+                TransactionId = multiRequest.TransactionId,
+            };
 
-			var multiRequest = await UssdConverter.ParseRequest(xmlContent);
-
-
-
-			Esme esme = await unitOfWork.SybaseRepository.QueryEsme(multiRequest.USSDRequestString);
-
-
-
-			MultiResponseUSSD multiResponse = new MultiResponseUSSD()
-			{
-				TransactionId = multiRequest.TransactionId,
-			};
-
-			if (esme.Activeenabletime == "1994-01-01 12:00:00 AM")
-				esme.Activeenabletime = "unKnown";
+            if (esme.Activeenabletime == "1994-01-01 12:00:00 AM")
+                esme.Activeenabletime = "unKnown";
 
 
 
-			if (esme.System_Id != null)
-			{
+            if (esme.System_Id != null)
+            {
+                multiResponse.USSDResponseString = "You Will Receive Details in Message";
+                string Message =
+                    "Short Number : " + esme.System_Id + "\n\n" +
+                    "Service Name : \n" + esme.Description + "\n\n" +
+                    "Active Time : \n" + esme.Activeenabletime + "\n\n" +
+                    "Expiry Time : \n" + esme.Activeexpiry;
 
-				multiResponse.USSDResponseString = "You Will Receive Details in Message";
-				string Message =
-					"Short Number : " + esme.System_Id + "\n\n" +
-					"Service Name : \n" + esme.Description + "\n\n" +
-					"Active Time : \n" + esme.Activeenabletime + "\n\n" +
-					"Expiry Time : \n" + esme.Activeexpiry;
+                // Submit SMS
+                await unitOfServices.MessageServices.SendSMS(multiRequest.MSISDN, Message);
 
-				response = new ContentResult
-				{
-					ContentType = contentType,
-					Content = UssdConverter.CreateResponses.Success(multiResponse),
-					StatusCode = 200
-				};
+                return multiResponse;
+            }
+            else if (esme.System_Id == null && esme.Description == "ErrorCode#0004 : Pool timed out trying to reserve a connection")
+            {
+                multiResponse.USSDResponseString = "Database Connection timed out";
 
-				// Submit SMS
+                return multiResponse;
+            }
+            else
+            {
 
-				await unitOfServices.MessageServices.SendSMS(multiRequest.MSISDN, Message);
-			}
-			else if (esme.System_Id == null && esme.Description == "ErrorCode#0004 : Pool timed out trying to reserve a connection")
-			{
-				multiResponse.USSDResponseString = "Database Connection timed out";
+                multiResponse.USSDResponseString = "The Entered Short Number not Exist";
+            }
 
-				response = new ContentResult
-				{
-					ContentType = contentType,
-					Content = UssdConverter.CreateResponses.Success(multiResponse),
-					StatusCode = 200
-				};
-			}
-			else
-			{
-
-				multiResponse.USSDResponseString = "The Entered Short Number not Exist";
-			}
-
-			response = new ContentResult
-			{
-				ContentType = contentType,
-				Content = UssdConverter.CreateResponses.Success(multiResponse),
-				StatusCode = 200
-			};
-
-			testDB(multiRequest.USSDRequestString);
-			return response;
+            testDB(multiRequest.USSDRequestString);
+            return multiResponse;
         }
 
-		private void testDB(string systemID)
+        private void testDB(string systemID)
 		{
 			var r = unitOfWork.SybaseRepository.CheckEsme(systemID);
 		}
 
+        //private static void QueryInSMS(string Target, string Message)
+        //{
+        //	List<string> Targets = new List<string>() { };
+        //	Targets.Add(Target);
+
+        //	try
+        //	{
+        //		Process.SmsActions smsActions = new Process.SmsActions();
+        //		if (Message != null)
+        //		{
+        //			smsActions.PostSms(Targets, Message);
+        //		}
+
+        //	}
+        //	catch { }
+        //}
 
 
-		//private static void QueryInSMS(string Target, string Message)
-		//{
-		//	List<string> Targets = new List<string>() { };
-		//	Targets.Add(Target);
 
-		//	try
-		//	{
-		//		Process.SmsActions smsActions = new Process.SmsActions();
-		//		if (Message != null)
-		//		{
-		//			smsActions.PostSms(Targets, Message);
-		//		}
 
-		//	}
-		//	catch { }
-		//}
 
-	}
+
+
+
+
+
+
+
+
+
+
+        public async Task<ContentResult> QueryEsmeServiceByUssd(string xmlContent)
+        {
+            ContentResult response = new ContentResult();
+
+            MultiResponseUSSD multiResponse = await QueryEsmeService(await UssdConverter.ParseRequest(xmlContent));
+
+            return new ContentResult
+            {
+                ContentType = contentType,
+                Content = UssdConverter.CreateResponses.Success(multiResponse),
+                StatusCode = 200
+            };
+        }
+
+        public async Task<ContentResult> QueryEsmeServiceDirect(string ussdServiceCode,string mSISDN, string ussdRequestString)
+        {
+            ContentResult response = new ContentResult();
+
+            MultiRequestUSSD multiRequest = new()
+            {
+                TransactionId = new Random().Next().ToString(),
+                TransactionTime = DateTime.Now.ToString("yyyyMMddTHH:mm:ss"),
+                USSDServiceCode = ussdServiceCode,
+                MSISDN = mSISDN,
+                USSDRequestString= ussdRequestString,
+                Response=""            
+            };
+
+            MultiResponseUSSD multiResponse = await QueryEsmeService(multiRequest);
+
+            return new ContentResult
+            {
+                ContentType = contentType,
+                Content = UssdConverter.CreateResponses.Success(multiResponse),
+                StatusCode = 200
+            };
+        }
+    }
 }

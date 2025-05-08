@@ -22,7 +22,7 @@ namespace EsmeChecker.WebAPI.Controllers
 
 		[HttpPost]
 		[Consumes(contentType)]
-		[Route("api/[Controller]/Query")]
+		[Route("api/[Controller]/QueryUssd")]
 		public async Task<ContentResult> Post()
 		{
 			using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
@@ -31,8 +31,23 @@ namespace EsmeChecker.WebAPI.Controllers
 
 				string xmlContent = await reader.ReadToEndAsync();
 
-				return await unitOfServices.MainServices.QueryEsmeService(xmlContent);
+				return await unitOfServices.MainServices.QueryEsmeServiceByUssd(xmlContent);
 			}
 		}
-	}
+
+
+
+        [HttpPost]
+        [Consumes(contentType)]
+        [Route("api/[Controller]/QueryDirect")]
+        public async Task<ContentResult> Direct(string ussdServiceCode, string mSISDN, string ussdRequestString)
+        {
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                ContentResult response = new ContentResult();
+
+                return await unitOfServices.MainServices.QueryEsmeServiceDirect(ussdServiceCode,mSISDN,ussdRequestString);
+            }
+        }
+    }
 }

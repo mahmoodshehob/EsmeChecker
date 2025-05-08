@@ -24,7 +24,7 @@ namespace EsmeChecker.BusinessRules.Services
 			//await _loggerG.LogCampaignAsync(TargetNumber + "|" + Voucher);
 			try
 			{
-				var url = $"http://{_kannelModel.HostName}:{_kannelModel.Port}/cgi-bin/sendsms?username=kannel&password=kannel&smsc=ivas_campaign&from={_kannelModel.Sender}&to=%2B{targetNumber}&charset=UTF-8&coding=2&text={messageContent}";
+				var url = $"http://{_kannelModel.HostName}:{_kannelModel.Port}/cgi-bin/sendsms?username=kannel&password=kannel&smsc=ivas_cmservice&from={_kannelModel.Sender}&to=%2B{targetNumber}&charset=UTF-8&coding=2&text={messageContent}";
 
 				var request = new HttpRequestMessage(HttpMethod.Get, url);
 				var response = await _client.SendAsync(request);

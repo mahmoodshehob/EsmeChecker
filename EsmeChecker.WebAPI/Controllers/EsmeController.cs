@@ -13,15 +13,11 @@ namespace EsmeChecker.WebAPI.Controllers
 	{
 		IEsmeDbServices _esmeDbServices;
 
-
-
 		public EsmeController (IEsmeDbServices esmeDbServices)
 		{
 			_esmeDbServices = esmeDbServices;
 		
 		}
-
-
 
 		// GET: EsmesController
 		[HttpGet()]
