@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EsmeChecker.DataAccess.Repository;
+using EsmeChecker.DataAccess.Repository.IRepository;
 using EsmeChecker.Models.Helper;
 using Microsoft.Extensions.Configuration;
 
@@ -16,22 +18,37 @@ namespace EsmeChecker.DataAccess.Helper
 
 		public int MinDateTimeSecond { get; set; }
 
-		private MaxMinModel _maxMinModel = new MaxMinModel();
+		private readonly IUnitOfWork unitOfWork;
+
+
+		private MaxMinModelDto _maxMinModel;
 
 		private IConfiguration config;
 
-
-
-		public MaxMinDate GetMaxMinTime()
+		public MaxMinDate(IUnitOfWork unitOfWork)
 		{
+			this.unitOfWork = unitOfWork;
+		
+		}
 
+			public async Task<MaxMinDate> GetMaxMinTime()
+		{
+			_maxMinModel = new MaxMinModelDto();
 			try
 			{
-				config.GetSection("MaxMinModel").Bind(_maxMinModel);
+				//config.GetSection("MaxMinModel").Bind(_maxMinModel);
+				var getMaxMin = await unitOfWork.MaxMinConfig.GetMaxMinConfig();
+				if (getMaxMin == null) 
+				{
+					_maxMinModel.DayMin = getMaxMin.DayMin;
+					_maxMinModel.DayMax = getMaxMin.DayMax;
+					_maxMinModel.FixedHourMin = getMaxMin.FixedHourMin;
+					_maxMinModel.FixedHourMax = getMaxMin.FixedHourMax;
+				}
 			}
 			catch
 			{
-				_maxMinModel = new MaxMinModel();
+				_maxMinModel = new MaxMinModelDto();
 			}
 
 
@@ -66,7 +83,7 @@ namespace EsmeChecker.DataAccess.Helper
 			int minDateTimeSecond_int = Convert.ToInt32(MinDateTimeSecond);
 
 			return
-				new MaxMinDate
+				new MaxMinDate(unitOfWork)
 				{
 					MaxDateTimeSecond = maxDateTimeSecond_int,
 					MinDateTimeSecond = minDateTimeSecond_int

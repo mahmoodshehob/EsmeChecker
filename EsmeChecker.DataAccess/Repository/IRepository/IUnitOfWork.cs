@@ -8,11 +8,12 @@ namespace EsmeChecker.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
-		//ICategoryRepository Category { get; }
-		//IProductRepository Product { get; }
-		//void Save();
-
 		ISybaseRepository SybaseRepository { get; }
+		ICategoryRepository Category { get; }
+		IEmploweeRepository Emplowee { get; }
+		IMaxMinConfigRepository MaxMinConfig { get; }
+		
 
-    }
+		void Save();
+	}
 }

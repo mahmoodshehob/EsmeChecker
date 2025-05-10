@@ -54,7 +54,7 @@ namespace EsmeChecker.BusinessRules.Services
                     "Expiry Time : \n" + esme.Activeexpiry;
 
                 // Submit SMS
-                await unitOfServices.MessageServices.SendSMS(multiRequest.MSISDN, Message);
+                await unitOfServices.KannelService.SendSMS(multiRequest.MSISDN, Message);
 
                 return multiResponse;
             }
@@ -95,18 +95,6 @@ namespace EsmeChecker.BusinessRules.Services
         //	}
         //	catch { }
         //}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

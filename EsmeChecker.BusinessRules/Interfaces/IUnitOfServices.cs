@@ -6,6 +6,7 @@ namespace EsmeChecker.BusinessRules.Interfaces
 	{
 		IEsmeDbServices EsmeDbServices { get; }
 		IMainServices MainServices { get; }
-		IMessageServices MessageServices { get; }
+		IEmploweeServcie EmploweeServcie { get; }
+		IKannelService KannelService { get; }
 	}
 }

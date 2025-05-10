@@ -11,20 +11,21 @@ namespace EsmeChecker.WebAPI.Controllers
 	[Route("api/[Controller]/")]
 	public class EsmeController : ControllerBase
 	{
-		IEsmeDbServices _esmeDbServices;
 
-		public EsmeController (IEsmeDbServices esmeDbServices)
+		private readonly IUnitOfServices unitOfServices;
+
+		public EsmeController(IUnitOfServices unitOfServices)
 		{
-			_esmeDbServices = esmeDbServices;
-		
+			this.unitOfServices = unitOfServices;
 		}
+
 
 		// GET: EsmesController
 		[HttpGet()]
 		[Route("[Action]")]
 		public async Task<IActionResult> Index()
 		{
-			return Ok(await _esmeDbServices.QueryAllEsme());
+			return Ok(await unitOfServices.EsmeDbServices.QueryAllEsme());
 		}
 
 		[HttpGet()]
@@ -32,7 +33,7 @@ namespace EsmeChecker.WebAPI.Controllers
 		public async Task<ActionResult> MaxMin()
 		{
 
-			List<Esme> esme = await _esmeDbServices.MaxMin();
+			List<Esme> esme = await unitOfServices.EsmeDbServices.MaxMin();
 
 
 			return Ok(esme);

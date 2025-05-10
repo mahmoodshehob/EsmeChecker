@@ -220,8 +220,8 @@ INNER JOIN mocscdb.dbo.mb_group ON mocscdb.dbo.mb_group.number_id = mocscdb.dbo.
             string Message = null;
 
             List<Esme> ServiceP = new List<Esme>();
-            MaxMinDate maxMinDate =new();
-            maxMinDate.GetMaxMinTime();
+			MaxMinDate maxMinDate = new();
+			maxMinDate= maxMinDate.GetMaxMinTime();
 
 
 			try

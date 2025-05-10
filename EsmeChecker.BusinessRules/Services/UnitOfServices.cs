@@ -15,14 +15,17 @@ namespace EsmeChecker.BusinessRules.Services
 	{
 		public IEsmeDbServices EsmeDbServices { get; private set; }
 		public IMainServices MainServices { get; private set; }
-		public IMessageServices MessageServices { get; private set; }
+		public IEmploweeServcie EmploweeServcie { get; private set; }
+		public IKannelService KannelService { get; private set; }
 
 		public UnitOfServices(IConfiguration config , IUnitOfWork unitOfWork)
 		{
 			MainServices = new MainServices(config, unitOfWork, this);
 			EsmeDbServices = new EsmeDbServices(unitOfWork,this);
-			
-			MessageServices = new MessageServices(config,this);
+			EmploweeServcie = new EmploweeServcie(unitOfWork);
+
+
+			KannelService = new KannelService(config,this);
 		}
 
 	}

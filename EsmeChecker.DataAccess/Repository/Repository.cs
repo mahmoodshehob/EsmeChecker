@@ -7,17 +7,17 @@ using System.Linq.Expressions;
 using EsmeChecker.DataAccess.Data;
 using EsmeChecker.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
-using EsmeChecker.DataAccess.Data;
+using Microsoft.Build.Framework;
 
 namespace EsmeChecker.DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly SqlServerDbContext _dbContext;
+        private readonly PostgreServerDbContext _dbContext;
         internal DbSet<T> dbSet;
 
 
-        public Repository(SqlServerDbContext dbContext)
+        public Repository(PostgreServerDbContext dbContext)
         {
             _dbContext = dbContext;
 
@@ -27,19 +27,21 @@ namespace EsmeChecker.DataAccess.Repository
 
         }
 
-        public void Add(T entity)
+        public async Task Add(T entity)
         {
             dbSet.Add(entity);
-        }
+			await _dbContext.SaveChangesAsync();
 
-        public T Get(Expression<Func<T, bool>> filter , string? includeProperties = null, bool tracked = false)
+		}
+
+		public async Task<T> Get(Expression<Func<T, bool>> filter , string? includeProperties = null, bool tracked = false)
         {
 
             IQueryable<T> query = dbSet;
 
             if (tracked)
             {
-                query = query.Where(filter);
+                query =   query.Where(filter);
             }
             else
             {
@@ -55,42 +57,62 @@ namespace EsmeChecker.DataAccess.Repository
                 }
             }
 
-            return query.FirstOrDefault();
 
+            var result = await query.FirstOrDefaultAsync().ConfigureAwait(false);
+            return  result;
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+
+		public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, int PageSize = 10, int PageNumber = 1)
         {
-            IQueryable<T> query = dbSet;
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (var includeProp in includeProperties
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProp);
-                }
-            }
-            return query.ToList();
-        }
+			try
+			{
+				PageNumber = PageNumber <= 0 ? 1 : PageNumber;
+
+				IQueryable<T> query = dbSet;
+				if (filter != null)
+				{
+					query = query.Where(filter).Skip((PageNumber - 1) * PageSize).Take(PageSize);
+				}
+				else
+				{
+					query = query.Skip((PageNumber - 1) * PageSize).Take(PageSize);
+				}
+
+				if (includeProperties != null)
+				{
+					foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+					{
+						query = query.Include(includeProp).Skip((PageNumber - 1) * PageSize).Take(PageSize);
+					}
+				}
+				return await query.ToListAsync();
+			}
+			catch (Exception ex)
+			{
+                string message = ex.Message;
+				return Enumerable.Empty<T>();
+			}
+		}
         
-        public void Remove(T entity)
+        public async Task Remove(T entity)
         {
             dbSet.Remove(entity);
-        }
+			await _dbContext.SaveChangesAsync();
 
-        public void RemoveRange(IEnumerable<T> entity)
+		}
+
+		public async Task RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
-        }
+			await _dbContext.SaveChangesAsync();
+		}
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             dbSet.Update(entity);
-        }
+			await _dbContext.SaveChangesAsync();
+		}
 
     }
 }

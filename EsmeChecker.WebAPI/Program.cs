@@ -1,8 +1,13 @@
 using EsmeChecker.BusinessRules.Interfaces;
 using EsmeChecker.BusinessRules.Services;
+using EsmeChecker.DataAccess.Data;
+
 using EsmeChecker.DataAccess.Repository;
 using EsmeChecker.DataAccess.Repository.IRepository;
+using EsmeChecker.Models.StaticData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +17,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddDbContext<PostgreServerDbContext>(options =>
+	options.UseNpgsql(
+		builder.Configuration.GetConnectionString("PostgresConnection"),
+		npgsqlOptions => npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", SD.Schema.EsmeCheckers)
+	));
 
 
 //builder.Services.AddSwaggerGen();
@@ -55,11 +66,15 @@ builder.Services.AddScoped<IUnitOfServices, UnitOfServices>();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+bool enableSwagger = app.Environment.IsDevelopment() ||
+					 builder.Configuration.GetValue<bool>("EnableSwaggerInProduction");
+
+if (enableSwagger)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EsmeChecker.Models.Helper
+namespace EsmeChecker.Entities
 {
-    public class MaxMinModel
-    {
+	public class MaxMinConfig : BaseModel
+	{
 		public int FixedHourMax { get; set; } = 23;
 		public int FixedHourMin { get; set; } = 0;
 		public int DayMax { get; set; } = 6;
