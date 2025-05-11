@@ -8,5 +8,6 @@ namespace EsmeChecker.BusinessRules.Interfaces
 		IMainServices MainServices { get; }
 		IEmploweeServcie EmploweeServcie { get; }
 		IKannelService KannelService { get; }
-	}
+        IMaxMinConfigService MaxMinConfigService { get; }
+    }
 }

@@ -76,7 +76,7 @@ namespace EsmeChecker.BusinessRules.Services
 
         private void testDB(string systemID)
 		{
-			var r = unitOfWork.SybaseRepository.CheckEsme(systemID);
+			var r = unitOfWork.SybaseRepository.GetEsme(systemID);
 		}
 
         //private static void QueryInSMS(string Target, string Message)

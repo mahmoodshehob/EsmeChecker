@@ -9,9 +9,10 @@ namespace EsmeChecker.DataAccess.Repository.IRepository
 {
     public interface ISybaseRepository
     {
-		Task<List<Esme>> QueryAllEsme();
-		Task<Esme> CheckEsme(string systemID);
-		Task<string> EsmeAuth(string SN, int MoMt);
+        Task<IEnumerable<Esme>> GetAllEsmes(string? filter = null);
+        Task<IEnumerable<SmeInfo>> GetAllEsmesInfo(string? filter = null);
+		Esme GetEsme(string systemID,string? filter = "");
+		Task<string> GetEsmeAuth(string SN, int MoMt);
 		Task<(string, List<Esme>)> NotifcationEsme();
 		Task<Esme> QueryEsme(string systemID);
 	}

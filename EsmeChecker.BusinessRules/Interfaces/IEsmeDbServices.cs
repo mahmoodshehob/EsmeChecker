@@ -10,7 +10,7 @@ namespace EsmeChecker.BusinessRules.Interfaces
     public interface IEsmeDbServices
     {
 		Task<List<Esme>> QueryAllEsme();
-		Task<List<Esme>> MaxMin();
-
-	}
+		Task<List<Esme>> NotifcationEsme();
+        Task<List<Esme>> QueryNotifcationEsme();
+    }
 }

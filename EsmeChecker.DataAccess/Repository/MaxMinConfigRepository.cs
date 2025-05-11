@@ -17,30 +17,31 @@ namespace EsmeChecker.DataAccess.Repository
 
 		public async Task<MaxMinConfig> GetMaxMinConfig()
 		{
-			var config = await Get(c=> c.Id==1);
-			if (config == null) 
+			//var config = await Get(c=> c.Id==1);
+
+			var config = _dbContext.MaxMinConfigs.FirstOrDefault();
+
+            if (config == null) 
 			{				
 				MaxMinConfig maxMinConfig = new MaxMinConfig();
 				maxMinConfig.CreateDate= DateTime.Now;
 				await Add(maxMinConfig);
-				Save();
+				await Save();
 
-				config = await Get(c => c.Id == 1);
-
-			}
-
-
+                config = _dbContext.MaxMinConfigs.FirstOrDefault();
+            }
 
 			return config;
 		}
 
 		public async Task AddMaxMinConfig(MaxMinConfig entity)
 		{
-			dbSet.Add(entity);
+			await dbSet.AddAsync(entity);
 		}
-		public void Save()
+
+		public async Task Save()
 		{
-			_dbContext.SaveChanges();
+			await _dbContext.SaveChangesAsync();
 		}
 	}
 }

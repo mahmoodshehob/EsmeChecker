@@ -28,84 +28,90 @@ namespace EsmeChecker.WebAPI.Controllers
 			return Ok(await unitOfServices.EsmeDbServices.QueryAllEsme());
 		}
 
-		[HttpGet()]
-		[Route("[Action]")]
-		public async Task<ActionResult> MaxMin()
-		{
+        //[HttpGet()]
+        //[Route("[Action]")]
+        //public async Task<ActionResult> NotifcationEsme()
+        //{
+        //	List<Esme> esme = await unitOfServices.EsmeDbServices.NotifcationEsme();
+        //	return Ok(esme);
+        //}
 
-			List<Esme> esme = await unitOfServices.EsmeDbServices.MaxMin();
 
+        [HttpGet()]
+        [Route("[Action]")]
+        public async Task<ActionResult> NotifcationEsme()
+        {
+            List<Esme> esme = await unitOfServices.EsmeDbServices.QueryNotifcationEsme();
+            return Ok(esme);
+        }
 
-			return Ok(esme);
-		}
+        //GET: EsmesController/Details/5
+        //public ActionResult Details(int id)
+        //{
+        //	return View();
+        //}
 
-		//// GET: EsmesController/Details/5
-		//public ActionResult Details(int id)
-		//{
-		//    return View();
-		//}
+        //GET: EsmesController/Create
+        //public ActionResult Create()
+        //{
+        //	return View();
+        //}
 
-		//// GET: EsmesController/Create
-		//public ActionResult Create()
-		//{
-		//    return View();
-		//}
+        //POST: EsmesController/Create
+        //  [HttpPost]
+        //  [ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //	try
+        //	{
+        //		return RedirectToAction(nameof(Index));
+        //	}
+        //	catch
+        //	{
+        //		return View();
+        //	}
+        //}
 
-		//// POST: EsmesController/Create
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult Create(IFormCollection collection)
-		//{
-		//    try
-		//    {
-		//        return RedirectToAction(nameof(Index));
-		//    }
-		//    catch
-		//    {
-		//        return View();
-		//    }
-		//}
+        //GET: EsmesController/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //	return View();
+        //}
 
-		//// GET: EsmesController/Edit/5
-		//public ActionResult Edit(int id)
-		//{
-		//    return View();
-		//}
+        //POST: EsmesController/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //	try
+        //	{
+        //		return RedirectToAction(nameof(Index));
+        //	}
+        //	catch
+        //	{
+        //		return View();
+        //	}
+        //}
 
-		//// POST: EsmesController/Edit/5
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult Edit(int id, IFormCollection collection)
-		//{
-		//    try
-		//    {
-		//        return RedirectToAction(nameof(Index));
-		//    }
-		//    catch
-		//    {
-		//        return View();
-		//    }
-		//}
+        //GET: EsmesController/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //	return View();
+        //}
 
-		//// GET: EsmesController/Delete/5
-		//public ActionResult Delete(int id)
-		//{
-		//    return View();
-		//}
-
-		//// POST: EsmesController/Delete/5
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult Delete(int id, IFormCollection collection)
-		//{
-		//    try
-		//    {
-		//        return RedirectToAction(nameof(Index));
-		//    }
-		//    catch
-		//    {
-		//        return View();
-		//    }
-		//}
-	}
+        //POST: EsmesController/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //	try
+        //	{
+        //		return RedirectToAction(nameof(Index));
+        //	}
+        //	catch
+        //	{
+        //		return View();
+        //	}
+        //}
+    }
 }

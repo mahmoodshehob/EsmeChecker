@@ -17,15 +17,17 @@ namespace EsmeChecker.BusinessRules.Services
 		public IMainServices MainServices { get; private set; }
 		public IEmploweeServcie EmploweeServcie { get; private set; }
 		public IKannelService KannelService { get; private set; }
+        public IMaxMinConfigService MaxMinConfigService { get; private set; }
 
-		public UnitOfServices(IConfiguration config , IUnitOfWork unitOfWork)
+
+        public UnitOfServices(IConfiguration config , IUnitOfWork unitOfWork)
 		{
 			MainServices = new MainServices(config, unitOfWork, this);
 			EsmeDbServices = new EsmeDbServices(unitOfWork,this);
 			EmploweeServcie = new EmploweeServcie(unitOfWork);
+            MaxMinConfigService = new MaxMinConfigService(unitOfWork);
 
-
-			KannelService = new KannelService(config,this);
+            KannelService = new KannelService(config,this);
 		}
 
 	}
