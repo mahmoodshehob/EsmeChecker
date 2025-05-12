@@ -15,7 +15,7 @@ namespace EsmeChecker.Entities
 
 		public string? Postion { get; set; }
 
-		public Boolean? Allow { get; set; }
+		public Boolean Allow { get; set; } = true;
 
 
 		public int CategoryId { get; set; }

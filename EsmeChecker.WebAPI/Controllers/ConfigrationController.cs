@@ -18,7 +18,9 @@ namespace EsmeChecker.WebAPI.Controllers
         [Route("[Action]")]
         public async Task<ActionResult> GetConfigration()
         {
-            return Ok(unitOfServices.MaxMinConfigService.GetConfig());
+            var result = await unitOfServices.MaxMinConfigService.GetConfig();
+
+			return Ok(result);
         }
     }
 }

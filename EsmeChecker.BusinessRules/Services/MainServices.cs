@@ -29,10 +29,14 @@ namespace EsmeChecker.BusinessRules.Services
 
 		private const string contentType = "text/xml";
 
+        private async Task GenerateSMS(MultiRequestUSSD multiRequest)
+        { }
 
-        private async Task<MultiResponseUSSD> QueryEsmeService(MultiRequestUSSD multiRequest)
+
+
+		private async Task<MultiResponseUSSD> QueryEsmeService(MultiRequestUSSD multiRequest)
         {
-            Esme esme = await unitOfWork.SybaseRepository.QueryEsme(multiRequest.USSDRequestString);
+            Esme esme = await unitOfServices.EsmeDbServices.QueryOneEsme(multiRequest.USSDRequestString);
 
             MultiResponseUSSD multiResponse = new MultiResponseUSSD()
             {
@@ -70,33 +74,8 @@ namespace EsmeChecker.BusinessRules.Services
                 multiResponse.USSDResponseString = "The Entered Short Number not Exist";
             }
 
-            testDB(multiRequest.USSDRequestString);
             return multiResponse;
         }
-
-        private void testDB(string systemID)
-		{
-			var r = unitOfWork.SybaseRepository.GetEsme(systemID);
-		}
-
-        //private static void QueryInSMS(string Target, string Message)
-        //{
-        //	List<string> Targets = new List<string>() { };
-        //	Targets.Add(Target);
-
-        //	try
-        //	{
-        //		Process.SmsActions smsActions = new Process.SmsActions();
-        //		if (Message != null)
-        //		{
-        //			smsActions.PostSms(Targets, Message);
-        //		}
-
-        //	}
-        //	catch { }
-        //}
-
-
 
         public async Task<ContentResult> QueryEsmeServiceByUssd(string xmlContent)
         {
