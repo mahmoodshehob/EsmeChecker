@@ -92,7 +92,7 @@ namespace EsmeChecker.BusinessRules.Services
 			List<string> msisdnS = new List<string>();
 			foreach (var emp in Emplowees) { if (emp.Allow) { msisdnS.Add(emp.Msisdn); } }
 
-			GenerateMessageForMulti(msisdnS, esme);
+			await GenerateMessageForMulti(msisdnS, esme);
 
 			return esme;
         }
@@ -132,7 +132,7 @@ namespace EsmeChecker.BusinessRules.Services
 				}
 			}
 
-			for (int i = 0; i < esme_s.Count; i++)
+			for (int i = 0; i < msisdn.Count; i++)
 			{
 				await unitOfServices.KannelService.SendSMS(msisdn[i], Message);
 			}
