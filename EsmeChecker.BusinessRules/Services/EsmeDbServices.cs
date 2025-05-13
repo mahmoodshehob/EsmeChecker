@@ -56,12 +56,12 @@ namespace EsmeChecker.BusinessRules.Services
 			return null;
 		}
 
-		public async Task<List<Esme>> NotifcationEsme()
-		{
-			(string Message, List<Esme> esme) = await unitOfWork.SybaseRepository.NotifcationEsme();
+		//public async Task<List<Esme>> NotifcationEsme()
+		//{
+		//	(string Message, List<Esme> esme) = await unitOfWork.SybaseRepository.NotifcationEsme();
 
-			return esme;
-		}
+		//	return esme;
+		//}
 
         public async Task<List<Esme>> QueryNotifcationEsme()
         {
@@ -83,34 +83,18 @@ namespace EsmeChecker.BusinessRules.Services
 
            // var result2 = await unitOfWork.SybaseRepository.GetAllEsmesInfo();
 
-
             List<Esme> esme = result.ToList();
 
-
 			//get the msisdns will recieve notifcation
-			var Emplowees = await unitOfWork.Emplowee.GetAll();
-			List<string> msisdnS = new List<string>();
-			foreach (var emp in Emplowees) { if (emp.Allow) { msisdnS.Add(emp.Msisdn); } }
+			var emplowees = await unitOfWork.Emplowee.GetAll(e=>e.Allow==true);
 
-			await GenerateMessageForMulti(msisdnS, esme);
+			await GenerateMessage(emplowees.ToList(), esme);
 
 			return esme;
         }
 
-		public async Task GenerateMessageForOne(string msisdn, Esme esme) 
-		{
-			string Message =
-				"Short Number : " + esme.System_Id + "\n\n" +
-				"Service Name : \n" + esme.Description + "\n\n" +
-				"Active Time : \n" + esme.Activeenabletime + "\n\n" +
-				"Expiry Time : \n" + esme.Activeexpiry;
 
-
-			await unitOfServices.KannelService.SendSMS(msisdn, Message);
-
-		}
-
-		public async Task GenerateMessageForMulti(List<string> msisdn, List<Esme> esme_s)
+		public async Task GenerateMessage(List<Emplowee> emplowees, List<Esme> esme_s)
 		{
 			string Message =
 				"Short Number : " + esme_s[0].System_Id + "\n\n" +
@@ -132,11 +116,10 @@ namespace EsmeChecker.BusinessRules.Services
 				}
 			}
 
-			for (int i = 0; i < msisdn.Count; i++)
+			for (int i = 0; i < emplowees.Count; i++)
 			{
-				await unitOfServices.KannelService.SendSMS(msisdn[i], Message);
+				await unitOfServices.KannelService.SendSMS(emplowees[i].Msisdn, Message);
 			}
-
 		}
 	}
 }

@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 namespace EsmeChecker.Entities
 {
     public class Category : BaseModel
-    {        
-        public string Name { get; set; }
-    }
+    {        		
+		public string? Administration { get; set; }
+
+		public string? Department { get; set; }
+
+		public string? Unit { get; set; }
+
+	}
 }

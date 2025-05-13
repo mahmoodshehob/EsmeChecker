@@ -1,7 +1,10 @@
 ﻿using EsmeChecker.BusinessRules.Interfaces;
 using EsmeChecker.DataAccess.Repository.IRepository;
+using EsmeChecker.Entities;
+using EsmeChecker.Entities.Dtos;
 using EsmeChecker.Models.Helper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Text;
 
 namespace EsmeChecker.WebAPI.Controllers
@@ -22,21 +25,32 @@ namespace EsmeChecker.WebAPI.Controllers
 		[Route("api/[Controller]/GetAll")]
 		public async Task<IActionResult> GetAll(PaginatedModel paginatedModel)
 		{
-			return Ok(await unitOfServices.EmploweeServcie.GetAll(paginatedModel));
+			var result = await unitOfServices.EmploweeServcie.GetAll(paginatedModel);
+			return StatusCode((int)result.StatusCode, result);
 		}
 
+		[HttpGet]
+		[Route("api/[Controller]/View")]
+		public async Task<IActionResult> View(int emploweeId)
+		{
+			var result = await unitOfServices.EmploweeServcie.View(emploweeId);
+			return StatusCode((int)result.StatusCode, result);
+		}
 
-		//[HttpPost]
-		//[Route("api/[Controller]/Create")]
-		//public async Task<ContentResult> Create(string ussdServiceCode, string mSISDN, string ussdRequestString)
-		//{
-		//	using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
-		//	{
-		//		ContentResult response = new ContentResult();
+		[HttpPost]
+		[Route("api/[Controller]/Create")]
+		public async Task<IActionResult> Create(EmploweeDto emplowee)
+		{
+			var result = await unitOfServices.EmploweeServcie.Create(emplowee);
+			return StatusCode((int)result.StatusCode, result);
+		}
 
-		//		return await unitOfServices.MainServices.QueryEsmeServiceDirect(ussdServiceCode, mSISDN, ussdRequestString);
-		//	}
-		//}
-
+		[HttpPut]
+		[Route("api/[Controller]/Update")]
+		public async Task<IActionResult> Update(EmploweeDto emplowee)
+		{
+			var result = await unitOfServices.EmploweeServcie.Update(emplowee);
+			return StatusCode((int)result.StatusCode, result);
+		}
 	}
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EsmeChecker.DataAccess.Migrations
 {
     [DbContext(typeof(PostgreServerDbContext))]
-    [Migration("20250510015652_MaxMinConfig")]
-    partial class MaxMinConfig
+    [Migration("20250513012009_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,14 +34,19 @@ namespace EsmeChecker.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Administration")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("ModifyDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("Unit")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -52,16 +57,20 @@ namespace EsmeChecker.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreateDate = new DateTime(2025, 4, 26, 21, 6, 43, 0, DateTimeKind.Utc),
+                            Administration = "Telecom",
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4025),
+                            Department = "Network Service",
                             ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "NSM"
+                            Unit = "VAS"
                         },
                         new
                         {
                             Id = 2,
-                            CreateDate = new DateTime(2025, 4, 26, 21, 6, 43, 0, DateTimeKind.Utc),
+                            Administration = "Commercial",
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4027),
+                            Department = "Product Development",
                             ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Commercial"
+                            Unit = "VAS"
                         });
                 });
 
@@ -73,7 +82,7 @@ namespace EsmeChecker.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool?>("Allow")
+                    b.Property<bool>("Allow")
                         .HasColumnType("boolean");
 
                     b.Property<int>("CategoryId")
@@ -108,10 +117,11 @@ namespace EsmeChecker.DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            Allow = true,
                             CategoryId = 1,
-                            CreateDate = new DateTime(2025, 4, 26, 21, 6, 50, 0, DateTimeKind.Utc),
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4110),
                             Email = "m.shehob@libyana.ly",
-                            ModifyDate = new DateTime(2025, 4, 26, 21, 6, 50, 0, DateTimeKind.Utc),
+                            ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Msisdn = "218947776156",
                             Name = "Mahmood Shehob",
                             Postion = "vas Engineer"
@@ -119,24 +129,62 @@ namespace EsmeChecker.DataAccess.Migrations
                         new
                         {
                             Id = 2,
+                            Allow = false,
                             CategoryId = 1,
-                            CreateDate = new DateTime(2025, 4, 26, 21, 6, 50, 0, DateTimeKind.Utc),
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4112),
+                            Email = "a.zeglam@libyana.ly",
+                            ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Msisdn = "218947777544",
+                            Name = "Aisha Zeglam",
+                            Postion = "vas Engineer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Allow = true,
+                            CategoryId = 1,
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4113),
                             Email = "s.grada@libyana.ly",
-                            ModifyDate = new DateTime(2025, 4, 26, 21, 6, 50, 0, DateTimeKind.Utc),
+                            ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Msisdn = "218947775684",
                             Name = "Said Grada",
                             Postion = "vas Engineer"
                         },
                         new
                         {
-                            Id = 3,
-                            CategoryId = 2,
-                            CreateDate = new DateTime(2025, 4, 26, 21, 6, 50, 0, DateTimeKind.Utc),
-                            Email = "s.grada@libyana.ly",
-                            ModifyDate = new DateTime(2025, 4, 26, 21, 6, 50, 0, DateTimeKind.Utc),
-                            Msisdn = "218947776081",
-                            Name = "Ghada",
+                            Id = 4,
+                            Allow = true,
+                            CategoryId = 1,
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4114),
+                            Email = "m.alshuhoumi@libyana.ly",
+                            ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Msisdn = "218947775683",
+                            Name = "Makhzoum Alshuhoumi",
                             Postion = "vas Engineer"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Allow = true,
+                            CategoryId = 2,
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4116),
+                            Email = "M.Elsharef@libyana.ly",
+                            ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Msisdn = "218947777131",
+                            Name = "Mohamed Elsharef",
+                            Postion = "emplowee"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Allow = true,
+                            CategoryId = 2,
+                            CreateDate = new DateTime(2025, 5, 13, 1, 20, 8, 855, DateTimeKind.Utc).AddTicks(4117),
+                            Email = "GHADAH.ALI@Libyana.ly",
+                            ModifyDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Msisdn = "218947776081",
+                            Name = "Ghada Ali",
+                            Postion = "emplowee"
                         });
                 });
 

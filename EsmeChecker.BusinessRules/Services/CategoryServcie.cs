@@ -23,7 +23,11 @@ namespace EsmeChecker.BusinessRules.Services
 			}
 			else
 			{
-				return await unitOfWork.Category.GetAll(f => f.Name.Contains(paginated.Value), PageSize: paginated.PageSize, PageNumber: paginated.PageNumber);
+				return await unitOfWork.Category.GetAll(f => 
+				f.Administration.Contains(paginated.Value) ||
+				f.Department.Contains(paginated.Value) ||
+				f.Unit.Contains(paginated.Value)
+				, PageSize: paginated.PageSize, PageNumber: paginated.PageNumber);
 			}
 		}
 	}

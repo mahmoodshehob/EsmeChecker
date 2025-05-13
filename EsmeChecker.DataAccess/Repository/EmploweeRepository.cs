@@ -15,9 +15,9 @@ namespace EsmeChecker.DataAccess.Repository
 			_dbContext = dbContext;
 		}
 
-		public void Save()
+		public async Task Save()
 		{
-			_dbContext.SaveChanges();
+			await _dbContext.SaveChangesAsync();
 		}
 	}
 }

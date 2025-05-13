@@ -1,4 +1,5 @@
 ﻿using EsmeChecker.Entities;
+using EsmeChecker.Entities.Dtos;
 using EsmeChecker.Models.Helper;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,12 @@ namespace EsmeChecker.BusinessRules.Interfaces
 {
     public interface IEmploweeServcie
     {
-		Task<IEnumerable<Emplowee>> GetAll(PaginatedModel paginated);
+		Task<ServiceResponse<IEnumerable<Emplowee>>> GetAll(PaginatedModel paginated);
+
+		Task<ServiceResponse<Emplowee>> View(int EmploweeId);
+
+		Task<ServiceResponse<Boolean>> Create(EmploweeDto emplowee);
+
+		Task<ServiceResponse<Boolean>> Update(EmploweeDto emplowee);
 	}
 }

@@ -33,8 +33,11 @@ namespace EsmeChecker.DataAccess.Data
 			modelBuilder.HasDefaultSchema(SD.Schema.EsmeCheckers);
 
 			modelBuilder.Entity<Category>().HasData(
-			new Category { Id = 1, Name = "NSM", CreateDate = new DateTime(2025, 4, 26, 21, 6, 43, DateTimeKind.Utc) },
-			new Category { Id = 2, Name = "Commercial", CreateDate = new DateTime(2025, 4, 26, 21, 6, 43, DateTimeKind.Utc) }
+				//new Category { Id = 1, Name = "NSM", CreateDate = new DateTime(2025, 4, 26, 21, 6, 43, DateTimeKind.Utc) },
+				//new Category { Id = 2, Administration = "Commercial",	Department = "Product Development",	Unit = "VAS", CreateDate = new DateTime(2025, 4, 26, 21, 6, 43, DateTimeKind.Utc) },
+								
+				new Category { Id = 1, Administration = "Telecom", Department = "Network Service", Unit = "VAS", CreateDate = DateTime.UtcNow },
+				new Category { Id = 2, Administration = "Commercial", Department = "Product Development", Unit = "VAS", CreateDate = DateTime.UtcNow }
 			);
 
 			// Seed Emplowees (must reference CategoryId manually)
@@ -47,30 +50,64 @@ namespace EsmeChecker.DataAccess.Data
 					Email = "m.shehob@libyana.ly",
 					Postion = "vas Engineer",
 					CategoryId = 1, // FK to "NSM"
-					CreateDate = new DateTime(2025, 4, 26, 21, 6, 50, DateTimeKind.Utc),
-					ModifyDate = new DateTime(2025, 4, 26, 21, 6, 50, DateTimeKind.Utc)
+					CreateDate = DateTime.UtcNow,
+					ModifyDate = default
 				},
 				new Emplowee
 				{
 					Id = 2,
+					Msisdn = "218947777544",
+					Name = "Aisha Zeglam",
+					Email = "a.zeglam@libyana.ly",
+					Postion = "vas Engineer",
+					CategoryId = 1, // FK to "Commercial"
+					Allow=false,
+					CreateDate = DateTime.UtcNow,
+					ModifyDate = default
+				},
+				new Emplowee
+				{
+					Id = 3,
 					Msisdn = "218947775684",
 					Name = "Said Grada",
 					Email = "s.grada@libyana.ly",
 					Postion = "vas Engineer",
 					CategoryId = 1, // FK to "Commercial"
-					CreateDate = new DateTime(2025, 4, 26, 21, 6, 50, DateTimeKind.Utc),
-					ModifyDate = new DateTime(2025, 4, 26, 21, 6, 50, DateTimeKind.Utc)
+					CreateDate = DateTime.UtcNow,
+					ModifyDate = default
 				},
 				new Emplowee
 				{
-					Id =3,
-					Msisdn = "218947776081",
-					Name = "Ghada",
-					Email = "s.grada@libyana.ly",
+					Id = 4,
+					Msisdn = "218947775683",
+					Name = "Makhzoum Alshuhoumi",
+					Email = "m.alshuhoumi@libyana.ly",
 					Postion = "vas Engineer",
+					CategoryId = 1, // FK to "Commercial"
+					CreateDate = DateTime.UtcNow,
+					ModifyDate = default
+				},
+				new Emplowee
+				{
+					Id = 5,
+					Msisdn = "218947777131",
+					Name = "Mohamed Elsharef",
+					Email = "M.Elsharef@libyana.ly",
+					Postion = "emplowee",
 					CategoryId = 2, // FK to "Commercial"
-					CreateDate = new DateTime(2025, 4, 26, 21, 6, 50, DateTimeKind.Utc),
-					ModifyDate = new DateTime(2025, 4, 26, 21, 6, 50, DateTimeKind.Utc)
+					CreateDate = DateTime.UtcNow,
+					ModifyDate = default
+				},
+				new Emplowee
+				{
+					Id =6,
+					Msisdn = "218947776081",
+					Name = "Ghada Ali",
+					Email = "GHADAH.ALI@Libyana.ly",
+					Postion = "emplowee",
+					CategoryId = 2, // FK to "Commercial"
+					CreateDate = DateTime.UtcNow,
+					ModifyDate = default
 				}
 			);
 		}
